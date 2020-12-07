@@ -1,5 +1,7 @@
 ![leco.png](app/web/static/images/big_logo.png)
 
+![quote.png](img/quote.png)
+
 <p>
   <img src="https://img.shields.io/badge/status-building-orange.svg">
   <img src="https://img.shields.io/badge/version-v0.0.0-blue.svg">
@@ -11,6 +13,8 @@
   <img src="https://img.shields.io/badge/Made%20with-Docker-blue?style=flat&logo=docker&logoColor=white">
   <img src="https://img.shields.io/badge/Made%20with-MongoDB-lightgreen?style=flat&logo=mongodb&logoColor=white">
 </p>
+
+
 
 # Table of contents
 
