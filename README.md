@@ -1,6 +1,6 @@
 ![leco.png](app/web/static/images/big_logo.png)
 
-![quote.png](img/quote.png)
+![quote.png](assets/quote.png)
 
 <p>
   <img src="https://img.shields.io/badge/status-building-orange.svg">
@@ -25,9 +25,10 @@
   - [[Optional] Git](#optional-git)
   - [Docker](#docker)
 - [Usage](#usage)
-- [Code](#code)
+- [Contributing](#contributing)
 - [Help](#help)
 - [Credits](#credits)
+- [License](#license)
 
 # About
 
@@ -61,7 +62,7 @@ $ docker-compose up
 ```
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-# Code
+# Contributing
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -76,3 +77,7 @@ We would like to give our thanks to :
 - **KOUEK Jean-Baptiste**
 
 For teaching us about the tools we used for this project and the help given during the building of this project.
+
+# License
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
