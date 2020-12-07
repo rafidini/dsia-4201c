@@ -1,4 +1,4 @@
-![leco.png](web/static/images/big_logo.png)
+![leco.png](app/web/static/images/big_logo.png)
 
 <p>
   <img src="https://img.shields.io/badge/status-building-orange.svg">
