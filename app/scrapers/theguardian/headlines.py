@@ -1,5 +1,6 @@
 import datetime
 import scrapy
+from config import BASE_URL
 
 TODAY = datetime.datetime.now()
 
@@ -12,7 +13,7 @@ class TGHeadlinesSpider(scrapy.Spider):
         date = getattr(self, 'date', False)
 
         if len(kwargs) <= 1 and not date:
-            self.start_urls = ['https://www.theguardian.com/environment']
+            self.start_urls = [BASE_URL]
 
         else:
             if date :

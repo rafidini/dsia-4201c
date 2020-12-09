@@ -7,7 +7,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/news')
-def category():
+def news():
     return render_template('news.html')
 
 @app.route('/about')

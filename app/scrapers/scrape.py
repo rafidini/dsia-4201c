@@ -1,13 +1,12 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
-from scrapers.theguardian import headlines
-
-FEED_URI = 'data/headlines.json'  # Path to the saved file 
+from theguardian.headlines import TGHeadlinesSpider
+from config import FEED_URI, FEED_FORMAT
 
 def scrape():
     scraped = {}
-    process = CrawlerProcess({"FEED_URI":FEED_URI})
-    process.crawl(headlines.TGHeadlinesSpider, outputResponse=scraped)
+    process = CrawlerProcess({"FEED_URI":FEED_URI, 'FEED_FORMAT':FEED_FORMAT})
+    process.crawl(TGHeadlinesSpider, outputResponse=scraped)
     process.start(stop_after_crawl=True)
     return scraped
 

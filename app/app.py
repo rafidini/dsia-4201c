@@ -1,7 +1,10 @@
-from web import app
-from scrapers.scrape import scrape
+from web import app  # Import for the initiated Flask App
+from subprocess import check_output
 
-#headlines = scrape()
+
 
 if __name__=='__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+    check_output(['python3', 'app/scrapers/scrape.py'])  # Run the scraping of headlines
+
+    app.run(host='0.0.0.0', port=5000)  # Run the Flask App
