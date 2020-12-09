@@ -1,5 +1,4 @@
 import scrapy
-from config import BASE_URL
 
 class TGArticleSpider(scrapy.Spider):
     name = 'tg-article'
@@ -10,7 +9,7 @@ class TGArticleSpider(scrapy.Spider):
         url = getattr(self, 'url', False)
 
         if len(kwargs) <= 1 and not url:
-            self.start_urls = [BASE_URL]
+            self.start_urls = ['https://www.theguardian.com/environment']
 
         else:
             # Runned with : scrapy runspider article.py -a url=https://www.theguardian.com/environment/2020/dec/09/what-would-a-climate-friendly-uk-mean-for-you

@@ -1,7 +1,7 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
-from theguardian.headlines import TGHeadlinesSpider
-from config import FEED_URI, FEED_FORMAT
+from scrapers.theguardian.headlines import TGHeadlinesSpider
+from scrapers.config import FEED_URI, FEED_FORMAT
 
 def scrape():
     scraped = {}

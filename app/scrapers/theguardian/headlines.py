@@ -1,6 +1,5 @@
 import datetime
 import scrapy
-from config import BASE_URL
 
 TODAY = datetime.datetime.now()
 
@@ -13,7 +12,7 @@ class TGHeadlinesSpider(scrapy.Spider):
         date = getattr(self, 'date', False)
 
         if len(kwargs) <= 1 and not date:
-            self.start_urls = [BASE_URL]
+            self.start_urls = ['https://www.theguardian.com/environment']
 
         else:
             if date :
@@ -34,15 +33,22 @@ class TGHeadlinesSpider(scrapy.Spider):
 
     def parse(self, response):
         articles = response.css(".fc-item__container")  # Extract the articles
+        items = []
         for article in articles:  # Loop over the articles
             title = article.xpath('a/text()').extract()
             link = article.xpath('a/@href').extract()
             tag = article.xpath('.//span[@class="fc-item__kicker"]/text()').extract()
             image = article.xpath('.//source/@srcset').extract_first()
 
-            yield {
+            item = {
                 "title":title,
                 "link":link,
                 "tag":tag,
                 "image":image
             }
+
+            items.append(item)
+
+            yield item
+        
+        self.outputResponse['items'] = items
