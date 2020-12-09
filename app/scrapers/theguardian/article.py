@@ -18,6 +18,7 @@ class TGArticleSpider(scrapy.Spider):
 
     def parse(self, response):
         author = response.xpath('//meta[@property="article:author"]/@content').extract()
+        title  = response.xpath('//meta[@property="og:titlehor"]/@content').extract()
         tags   = response.xpath('//meta[@property="article:tag"]/@content').extract()
         date   = response.xpath('//meta[@property="article:published_time"]/@content').extract()
         images = response.xpath("//div[@itemprop='articleBody']").css('img').extract()
