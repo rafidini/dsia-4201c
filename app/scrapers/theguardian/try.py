@@ -1,36 +1,42 @@
 import json
 import subprocess
+from scrapy.crawler import CrawlerProcess
+from article import TGArticleSpider
 
 with open('headlines.json') as f: items = json.load(f)
 
 i = 1
 
 extracted = []
+outputResponse = dict()
+process = CrawlerProcess({'FEED_FORMAT':'json'})
+process.crawl(TGArticleSpider, start_urls=[item['link'][0] for item in items], outputResponse=outputResponse)
+process.start(stop_after_crawl=True)
 
-for item in items:
-    url = item['link'][0]
+data = outputResponse
 
-    subprocess.check_output([
-        'scrapy',
-        'runspider',
-        'article.py',
-        '-a',
-        f'url={url}',
-        '-o',
-        f'{i}.json'
-    ])
+for item in data['items']:
 
-    with open(f'{i}.json') as f: data = json.load(f)
+    extracted.append(item)
 
-    extracted.append(data[0])
-
-    subprocess.check_output([
-        'rm',
-        '-f',
-        f'{i}.json'
-    ])
+    with open('test.html', 'a') as outfile:
+        outfile.write("<h1>"+ ''.join(item['title']) + "</h1>")
+        outfile.write("<br>\n")
+        outfile.write("<h2>"+ ''.join(item['author']) + "</h2>")
+        outfile.write("<br>\n")
+        outfile.write("<h3>"+ ''.join(item['tags']) + "</h3>")
+        outfile.write("<br>\n")
+        outfile.write("<h4>"+ ''.join(item['url']) + "</h4>")
+        outfile.write("<br>\n")
+        outfile.write(''.join(item['body']))
+        outfile.write("<br>\n")
+        outfile.write(''.join(item['images']))
+        outfile.write('<hr>')
 
     i += 1
 
-with open('data.json', 'w') as outfile:
-    json.dump({"items": extracted}, outfile)
+    if i == 20: break
+
+process.stop()
+# with open('data.json', 'w') as outfile:
+#     json.dump({"items": extracted}, outfile)
