@@ -15,13 +15,24 @@ class TGArticleSpider(scrapy.Spider):
             # Runned with : scrapy runspider article.py -a url=https://www.theguardian.com/environment/2020/dec/09/what-would-a-climate-friendly-uk-mean-for-you
             self.start_urls = [url]
 
+    def bodyExtracted(self, body):
+        #  Expected extracting with 'articleBody' in itemprop
+        if isinstance(body, list):
+            #  The case the data was extracted
+            if len(body) >= 1:
+                return True
+        return False
+
     def parse(self, response):
         author = response.xpath('//meta[@property="article:author"]/@content').extract()
         title  = response.xpath('//meta[@property="og:titlehor"]/@content').extract()
         tags   = response.xpath('//meta[@property="article:tag"]/@content').extract()
         date   = response.xpath('//meta[@property="article:published_time"]/@content').extract()
-        images = response.xpath("//div[@itemprop='articleBody']").css('img').extract()
+        images = response.xpath("//div[@itemprop='articleBody']").css('img').xpath('@src').extract()
         body   = response.xpath("//div[@itemprop='articleBody']").css('p').extract()
+
+        if not self.bodyExtracted():
+            body = response.css('p').extract()
 
         yield {
             'url': self.start_urls[0],
