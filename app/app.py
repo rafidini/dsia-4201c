@@ -5,6 +5,7 @@ from scrapers.scrape import scrape
 
 if __name__=='__main__':
 
+    # This part exctract data from today's headlines
     data = scrape()
     print("----------------------------")
     print(f"Extracted : {data}")

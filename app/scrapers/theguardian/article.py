@@ -1,9 +1,23 @@
 import scrapy
+import json
 
 class TGArticleSpider(scrapy.Spider):
     name = 'tg-article'
     allowed_domains = ['theguardian.com']
     output = list()
+
+    def __init__(self, *args, **kwargs):
+        super(TGArticleSpider, self).__init__(*args, **kwargs)
+        has_json = getattr(self, 'json', False)
+        filepath = getattr(self, 'filepath', None)
+
+        if has_json:  # Extract 'start_urls' from json file
+            json_urls = None
+
+            with open(filepath) as f:  # Load the json file
+                v_json = json.load(f)
+
+            self.start_urls = [ headline['link'][0] for headline in v_json['items']]
 
     def bodyExtracted(self, body):
         #  Expected extracting with 'articleBody' in itemprop
