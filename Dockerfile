@@ -13,5 +13,9 @@ RUN pip install -r requirements.txt
 # Copy the application repository in the Docker image
 COPY /app .
 
+# Run the command to get the articles
+RUN python step1.py && \
+    python step2.py
+
 # The command to launch the app
 CMD ["python", "app.py"]

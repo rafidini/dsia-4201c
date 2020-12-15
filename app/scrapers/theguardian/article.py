@@ -10,6 +10,7 @@ class TGArticleSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(TGArticleSpider, self).__init__(*args, **kwargs)
         has_json = getattr(self, 'json', False)
+        links = getattr(self, 'links', False)
         filepath = getattr(self, 'filepath', None)
 
         if has_json:  # Extract 'start_urls' from json file
@@ -21,6 +22,9 @@ class TGArticleSpider(scrapy.Spider):
             check_output(['rm', '-f', filepath])  # Delete the file
 
             self.start_urls = [ headline['link'] for headline in v_json ]
+
+        elif links:
+            self.start_urls = links
 
     def bodyExtracted(self, body):
         #  Expected extracting with 'articleBody' in itemprop
