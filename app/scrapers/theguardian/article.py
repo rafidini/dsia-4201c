@@ -1,5 +1,6 @@
 import scrapy
 import json
+from subprocess import check_output
 
 class TGArticleSpider(scrapy.Spider):
     name = 'tg-article'
@@ -17,7 +18,9 @@ class TGArticleSpider(scrapy.Spider):
             with open(filepath) as f:  # Load the json file
                 v_json = json.load(f)
 
-            self.start_urls = [ headline['link'][0] for headline in v_json['items']]
+            check_output(['rm', '-f', filepath])  # Delete the file
+
+            self.start_urls = [ headline['link'] for headline in v_json ]
 
     def bodyExtracted(self, body):
         #  Expected extracting with 'articleBody' in itemprop
