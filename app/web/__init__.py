@@ -2,6 +2,7 @@ from flask import Flask
 import os
 from pymongo import MongoClient
 from flask import render_template
+from random import randint
 
 app = Flask(__name__)  # Init the app
 
@@ -17,5 +18,8 @@ collection.insert_many([
     {"title":"The former president", "value":3},
     {"title":"The meter president", "value":4}
 ])
+
+def add_data():
+    collection.insert_one({"title":str(randint(1,200)), "value":int(randint(1,200))})
 
 from web import views
