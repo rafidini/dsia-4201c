@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, url_for
-from . import app, collection, add_data
+from . import app, collection
 
 @app.route('/')
 @app.route('/home')
@@ -16,7 +16,6 @@ def about():
 
 @app.route('/facts')
 def facts():
-    add_data()
     return render_template('facts.html')
 
 @app.route('/article')

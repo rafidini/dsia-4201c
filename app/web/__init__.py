@@ -2,24 +2,19 @@ from flask import Flask
 import os
 from pymongo import MongoClient
 from flask import render_template
-from random import randint
+from db.utils import init_db, feed_db_json
+from subprocess import check_output
 
-app = Flask(__name__)  # Init the app
+# Init the app
+app = Flask(__name__)
 
-client = MongoClient('mongodb', 27017)
+# Init MongoDB
+database, collection = init_db('test', collection_name='articles')
 
-db = client['test']
+# Feed MongoDB from the webscraping
+filename = 'articles.json'
+feed_db_json(filename, collection=collection)
+check_output(['rm', '-f', filename])
 
-collection = db['titles']
-
-collection.insert_many([
-    {"title":"The new president", "value":1},
-    {"title":"The ancient president", "value":2},
-    {"title":"The former president", "value":3},
-    {"title":"The meter president", "value":4}
-])
-
-def add_data():
-    collection.insert_one({"title":str(randint(1,200)), "value":int(randint(1,200))})
-
+# The views/pages
 from web import views
