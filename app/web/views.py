@@ -26,9 +26,18 @@ def about():
 def facts():
     return render_template('facts.html')
 
-@app.route('/article')
-def article():
-    return render_template('article.html')
+@app.route('/article/<title>')
+def article(title):
+    # Query the database for the corresponding article
+    items = collection.find({"title":title})
+
+    # Converto to an Article instance
+    article = from_item_to_article(items[0])
+
+    # Look for similar articles
+    similars = random_item(3, collection)
+
+    return render_template('article.html', article=article, similar_articles=similars)
 
 @app.route('/random')
 def random():
@@ -37,10 +46,10 @@ def random():
     items = random_item(1, collection)
     item = items[0]
 
-    # Convert to an Article object
+    # Convert to an Article instance
     article = from_item_to_article(item)
 
     # Look for similar articles
     similars = random_item(3, collection)
 
-    return render_template('random.html', article=article, similar_articles=similars)
+    return render_template('article.html', article=article, similar_articles=similars)

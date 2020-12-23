@@ -13,8 +13,8 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">LifeStyle</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10 Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10 Simple rule</a></h4>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -25,9 +25,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Philosophy</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -38,9 +38,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Fashion</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -51,9 +51,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Article</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -64,9 +64,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Nature</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -77,9 +77,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Nature</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -90,9 +90,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Nature</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -103,9 +103,9 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <p class="text-uppercase">Nature</p>
-              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('article')}}">Organize Your Life With 10
+              <h4 class="card-title mb-4"><a class="text-white" href="">Organize Your Life With 10
                   Simple rule</a></h4>
-              <a class="btn btn-outline-light" href="{{url_for('article')}}">read more</a>
+              <a class="btn btn-outline-light" href="">read more</a>
             </div>
           </div>
         </article>
@@ -137,13 +137,13 @@
 
           <!-- ARTICLES : Title -->
           <h4 class="title-border">
-            <a class="text-dark" href="{{url_for('article')}}">{{article.title}}</a>
+            <a class="text-dark" href="{{url_for('article', title=article.title)}}">{{article.title}}</a>
           </h4>
 
           <!-- ARTICLES : Body preview -->
           <p>{{article.get_body()[:220] + '...'}}</p>
 
-          <a href="{{url_for('article')}}" class="btn btn-transparent">read more</a>
+          <a href="{{url_for('article', title=article.title)}}" class="btn btn-transparent">read more</a>
         </article>
       </div>
       {% endfor %}
