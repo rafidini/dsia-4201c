@@ -4,6 +4,7 @@ database.
 """
 
 from pymongo import MongoClient
+from web.models import Article
 import json
 
 # Constants for MongoDB
@@ -55,3 +56,59 @@ def feed_db_json(filepath, collection):
     print(f'> {i} items were saved in the database.')
     print(f"> {len(items['items']) - i} items were not saved in the database.")
 
+def random_item(size, collection):
+    """
+    This function returns random items from a given collection, 
+    the number of items is given by the parameter size.
+    """
+
+    # Extract the random item(s)
+    items = collection.aggregate([{'$sample': {'size':size}}])
+
+    # Convert them into a list
+    return [element for element in items]
+
+def from_item_to_article(item):
+    """
+    This function initialize an Article instance from
+    an extracted item from the MongoDB collection.
+    """
+    article = Article(
+        url=item['url'],
+        author=item['author'],
+        tags=item['tags'],
+        title=item['title'],
+        date=item['date'],
+        images=item['images'],
+        body=item['body'],
+        banner=item['banner']
+    )
+
+    return article
+
+def search_similar_articles(article, collection, max_articles=3):
+    """
+    This function queries the collection to look for similar
+    articles to the given one, and return them as a list of
+    Article instances.
+    """
+
+    # Define the query
+    # query = {}
+
+    # Launch the query
+    # items = collection.find(query).limit(max_articles)
+
+    # TODO - Comment this
+    items = random_item(max_articles, collection)
+
+    # Convert items to list of Article
+    articles = [from_item_to_article(item) for item in items]
+
+    return articles
+
+def search_n_last_articles(n, collection):
+    """
+    This functions returns n articles.
+    """
+    return [from_item_to_article(item) for item in collection.find({}).limit(n)]

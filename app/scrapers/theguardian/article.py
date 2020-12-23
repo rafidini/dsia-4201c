@@ -39,11 +39,12 @@ class TGArticleSpider(scrapy.Spider):
         tags   = response.xpath('//meta[@property="article:tag"]/@content').extract()
         date   = response.xpath('//meta[@property="article:published_time"]/@content').extract()
         images = response.xpath("//div[@itemprop='articleBody']").css('img').xpath('@src').extract()
-        body   = response.xpath("//div[@itemprop='articleBody']").css('p').extract()
+        body   = response.xpath("//div[@itemprop='articleBody']").css('p').xpath('string()').extract()
         author = response.xpath('//meta[@property="article:author"]/@content').extract()
+        banner = response.xpath('//body').css('img').xpath('@src').extract()
 
         if not self.bodyExtracted(body):
-            body = response.css('p').extract()
+            body = response.css('p').xpath('string()').extract()
 
         item = {
             'url': self.start_urls[0],
@@ -52,7 +53,8 @@ class TGArticleSpider(scrapy.Spider):
             'title': title,
             'date': date,
             'images': images,
-            'body': body
+            'body': body,
+            'banner': banner
         }
 
         yield item

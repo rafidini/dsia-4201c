@@ -11,10 +11,13 @@ app = Flask(__name__)
 # Init MongoDB
 database, collection = init_db('test', collection_name='articles')
 
-# Feed MongoDB from the webscraping
-filename = 'articles.json'
-feed_db_json(filename, collection=collection)
-check_output(['rm', '-f', filename])
+try:
+    # Feed MongoDB from the webscraping
+    filename = 'articles.json'
+    feed_db_json(filename, collection=collection)
+    check_output(['rm', '-f', filename])
+except:
+    pass
 
 # The views/pages
 from web import views

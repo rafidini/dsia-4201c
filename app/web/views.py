@@ -1,10 +1,18 @@
 from flask import Flask, redirect, render_template, request, url_for
 from . import app, collection
+from db.utils import random_item, from_item_to_article, search_similar_articles, search_n_last_articles
+from web.models import Article
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    # Number of articles
+    n = 15
+
+    # Extract articles
+    articles = search_n_last_articles(n, collection)
+
+    return render_template('index.html', articles=articles)
 
 @app.route('/news')
 def news():
@@ -22,7 +30,17 @@ def facts():
 def article():
     return render_template('article.html')
 
-@app.route('/special')
-def special():
-    items = [item for item in collection.find()]
-    return render_template('special.html', items=items)
+@app.route('/random')
+def random():
+    # Query the database for a random article
+    size = 1
+    items = random_item(1, collection)
+    item = items[0]
+
+    # Convert to an Article object
+    article = from_item_to_article(item)
+
+    # Look for similar articles
+    similars = random_item(3, collection)
+
+    return render_template('random.html', article=article, similar_articles=similars)
