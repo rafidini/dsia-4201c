@@ -35,7 +35,7 @@ def article(title):
     article = from_item_to_article(items[0])
 
     # Look for similar articles
-    similars = random_item(3, collection)
+    similars = [from_item_to_article(item) for item in collection.find().limit(3)]
 
     return render_template('article.html', article=article, similar_articles=similars)
 

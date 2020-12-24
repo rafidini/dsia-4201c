@@ -4,6 +4,7 @@ This module contains the models:
 """
 
 import maya  # Package for data parsing
+from textblob import TextBlob  # Package for text sentiment analysis
 
 # Default value
 NAN = 'Unknown'
@@ -114,6 +115,50 @@ class Article:
         whole = ' '.join(self.body)
 
         return whole
+
+    def is_negative(self):
+        """
+        This function return True if the text is more negative otherwise
+        False.
+        """
+        blob = TextBlob(self.get_body())  # Instanciate a TextBlob
+
+        sentiment_score = blob.sentiment.polarity  # Score of the sentiment
+
+        return sentiment_score < 0.0
+
+    def sentiment_score(self, negative=False):
+        """
+        This function returns the absolute score in percentage.
+        """
+
+        # Counters
+        neg = 0
+        pos = 0
+
+        # Scores
+        neg_score = 0
+        pos_score = 0
+
+        # Loop over sentences
+        for sentence in self.body:
+            blob = TextBlob(sentence)  # TextBlob init
+
+            score = blob.sentiment.polarity  # Compute sentiment score
+
+            if score < 0:
+                neg_score += score
+                neg += 1
+
+            elif score > 0:
+                pos_score += score
+                pos += 1 
+
+        neg_score = 0 if neg == 0 else neg_score / neg
+        pos_score = 0 if pos == 0 else pos_score / pos
+
+        return int(-neg_score * 100) if negative else int(pos_score * 100)
+        
 
 
 
