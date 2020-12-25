@@ -14,6 +14,10 @@ def home():
 
     return render_template('index.html', articles=articles)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
 @app.route('/news')
 def news():
     return render_template('news.html')
