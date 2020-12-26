@@ -19,8 +19,36 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 @app.route('/news')
-def news():
-    return render_template('news.html')
+@app.route('/news/<tag>')
+def news(tag=None):
+
+    if tag:
+        print(f'Tag is {tag}', flush=True)
+        tag = tag.replace("%20", " ")
+
+    # Query the database if tag is given
+    query = {'tags':tag} if tag else {}
+
+    # Launch the query
+    items = collection.find(query)
+    articles = list()
+
+    for item in items: 
+        print("ITEMS TAGS :", item['tags'], flush=True)
+        articles.append(from_item_to_article(item))    
+
+    # Get tags
+    try:
+        del v_tags
+    except:
+        pass
+
+    v_tags = set()
+    for article in articles:
+        for a_tag in article.tags:
+            v_tags.add(a_tag)
+
+    return render_template('news.html', tag=tag, articles=articles, tags=v_tags)
 
 @app.route('/about')
 def about():

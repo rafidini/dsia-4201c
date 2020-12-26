@@ -33,7 +33,7 @@ class Article:
         self.url    = url
         self.title  = title[0]
         self.date   = date[0]
-        self.tags   = tags[0].split(',') if has_elements(tags) else [NAN]
+        self.tags   = tags[0].lower().split(',') if has_elements(tags) else [NAN]
         self.images = images
         self.body   = body
         self.author = author[0] if has_elements(author) else NAN
