@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from . import app, collection
 from db.utils import random_item, from_item_to_article, search_similar_articles, search_n_last_articles
-from web.models import Article
+from web.models import Article, articles_count, average_letter_count, average_sentiment_score
 
 @app.route('/')
 @app.route('/home')
@@ -22,8 +22,8 @@ def page_not_found(error):
 @app.route('/news/<tag>')
 def news(tag=None):
 
+    # Cleaning the string
     if tag:
-        print(f'Tag is {tag}', flush=True)
         tag = tag.replace("%20", " ")
 
     # Query the database if tag is given
@@ -34,21 +34,28 @@ def news(tag=None):
     articles = list()
 
     for item in items: 
-        print("ITEMS TAGS :", item['tags'], flush=True)
         articles.append(from_item_to_article(item))    
 
-    # Get tags
+    # Clean tags
     try:
         del v_tags
     except:
         pass
 
+    # Every tags
     v_tags = set()
     for article in articles:
         for a_tag in article.tags:
             v_tags.add(a_tag)
 
-    return render_template('news.html', tag=tag, articles=articles, tags=v_tags)
+    # Get the statistics
+    stats = [
+        articles_count(articles),
+        average_letter_count(articles),
+        average_sentiment_score(articles)
+    ]
+
+    return render_template('news.html', tag=tag, articles=articles, tags=v_tags, stats=stats)
 
 @app.route('/about')
 def about():
@@ -67,7 +74,7 @@ def article(title):
     article = from_item_to_article(items[0])
 
     # Look for similar articles
-    similars = [from_item_to_article(item) for item in collection.find().limit(3)]
+    similars = [item for item in search_similar_articles(article, collection, max_articles=4)]
 
     return render_template('article.html', article=article, similar_articles=similars)
 

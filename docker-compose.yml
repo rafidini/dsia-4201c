@@ -9,7 +9,7 @@ services:
       - mongodb
 
   mongodb:
-    image: mongo:latest
+    image: mongo:4.0.8
     container_name: mongodb
     ports:
       - '27017:27017'

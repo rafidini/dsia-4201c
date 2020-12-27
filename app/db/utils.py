@@ -47,6 +47,10 @@ def feed_db_json(filepath, collection):
     # Loop over the items
     for item in items['items']:
         try:
+
+            # Process the tags
+            item['tags'] = item['tags'][0].lower().split(',')
+
             # Insert the item in the collection
             collection.insert_one(item)
             i += 1
@@ -94,13 +98,10 @@ def search_similar_articles(article, collection, max_articles=3):
     """
 
     # Define the query
-    # query = {}
+    query = {'tags': {'$in': article.tags}}
 
     # Launch the query
-    # items = collection.find(query).limit(max_articles)
-
-    # TODO - Comment this
-    items = random_item(max_articles, collection)
+    items = collection.find(query).limit(max_articles)
 
     # Convert items to list of Article
     articles = [from_item_to_article(item) for item in items]

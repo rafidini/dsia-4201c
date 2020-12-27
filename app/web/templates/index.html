@@ -75,7 +75,7 @@
 
           <!-- ARTICLES : Banner -->
           {% if article.has_banner() %}
-          <img class="img-fluid mb-4" src="{{article.banner}}" alt="post-thumb">
+          <img class="img-fluid mb-4 rounded-lg" src="{{article.banner}}" alt="post-thumb">
           {% else %}
           <img class="img-fluid mb-4" src="../static/images/post-single.jpg" alt="post-thumb">
           {% endif %}

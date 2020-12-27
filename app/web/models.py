@@ -33,7 +33,7 @@ class Article:
         self.url    = url
         self.title  = title[0]
         self.date   = date[0]
-        self.tags   = tags[0].lower().split(',') if has_elements(tags) else [NAN]
+        self.tags   = tags
         self.images = images
         self.body   = body
         self.author = author[0] if has_elements(author) else NAN
@@ -157,10 +157,14 @@ class Article:
         neg_score = 0 if neg == 0 else neg_score / neg
         pos_score = 0 if pos == 0 else pos_score / pos
 
-        return int(-neg_score * 100) if negative else int(pos_score * 100)
-        
+        neg_score = int(-neg_score * 100)
+        pos_score = int(pos_score * 100)
+        total = pos_score + neg_score
 
+        neg_score = 0 if total == 0 else (neg_score * 100) / total 
+        pos_score = 0 if total == 0 else (pos_score * 100) / total 
 
+        return round(neg_score) if negative else round(pos_score)
 
 def is_link(string):
     if "www." in string:
@@ -171,3 +175,50 @@ def is_link(string):
         return True
     else:
         return False
+
+# Functions for list of Article
+def articles_count(articles):
+    """
+    This function returns the length of the list.
+    """
+    return len(articles)
+
+def average_letter_count(articles):
+    """
+    This function returns the average letter count of
+    the articles.
+    """
+    letters = 0
+
+    # Number of articles
+    n = articles_count(articles)
+
+    # Loop over the articles
+    for article in articles:
+
+        # Increment the letters count
+        letters += len(article.get_body())
+
+    return round(letters / n, 1)
+
+def average_sentiment_score(articles):
+    """
+    This function returns a tuple of the average sentiment
+    score for both positivity and negativity.
+    """
+    # articles count
+    n = articles_count(articles)
+
+    # Score
+    negativity = 0
+    positivity = 0
+
+    # Loop over articles
+    for article in articles:
+        negativity += article.sentiment_score(negative=True)
+        positivity += article.sentiment_score(negative=False)
+
+    negativity = 0 if n == 0 else round(negativity / n, 1)
+    positivity = 0 if n == 0 else round(positivity / n, 1)
+
+    return (negativity, positivity)

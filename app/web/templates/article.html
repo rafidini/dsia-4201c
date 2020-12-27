@@ -25,8 +25,8 @@
       <div class="col-lg-8">
         <ul class="list-inline d-flex justify-content-between py-3">
           <!-- ARTICLE : Sentiment of the article -->
-          <li class="list-inline-item"><i class="ti-face-sad mr-2"></i>{{article.sentiment_score(negative=True)}}%</li>
-          <li class="list-inline-item"><i class="ti-face-smile mr-2"></i>{{article.sentiment_score(negative=False)}}%</li>
+          <li class="list-inline-item" style="color: red;"><i class="ti-face-sad mr-2" style="color: red;"></i><b>{{article.sentiment_score(negative=True)}}%</b></li>
+          <li class="list-inline-item" style="color: blue;"><i class="ti-face-smile mr-2" style="color: blue;"></i><b>{{article.sentiment_score(negative=False)}}%</b></li>
           <!-- ARTICLE : Author of the article -->
           <li class="list-inline-item"><i class="ti-user mr-2"></i>{{article.get_author()}}</li>
           <!-- ARTICLE : Date of the article -->
@@ -73,8 +73,8 @@
 
             <!-- ARTICLES : Banner -->
             <div class="post-thumb-sm mr-3">
-              {% if article.has_banner() %}
-              <img class="img-fluid" src="{{article.banner}}" alt="post-thumb">
+              {% if alike.has_banner() %}
+              <img class="img-fluid" src="{{alike.banner}}" alt="post-thumb">
               {% else %}
               <img class="img-fluid" src="../static/images/masonary-post/post-1.jpg" alt="post-thumb">
               {% endif %}
@@ -85,14 +85,14 @@
               <ul class="list-inline d-flex justify-content-between mb-2">
 
                 <!-- ARTICLES : Author -->
-                <li class="list-inline-item">{{article.get_author()}}</li>
+                <li class="list-inline-item">{{alike.get_author()}}</li>
 
                 <!-- ARTICLES : Date -->
-                <li class="list-inline-item">{{article.get_date(short=True)}}</li>
+                <li class="list-inline-item">{{alike.get_date(short=True)}}</li>
               </ul>
 
               <!-- ARTICLES : Title -->
-              <h6><a class="text-dark" href="{{article.url}}">{{article.title}}</a></h6>
+              <h6><a class="text-dark" href="{{url_for('article', title=alike.title)}}">{{alike.title}}</a></h6>
             </div>
             <!-- /ARTICLES : Body -->
 
@@ -106,9 +106,9 @@
         <div class="widget">
           <h6 class="mb-4">LINKS</h6>
           <ul class="list-inline tag-list">
-            <li class="list-inline-item m-1"><a href="{{article.url}}">original article</a></li>
+            <li class="list-inline-item m-1"></i><a href="{{article.url}}"><i class="ti-link mr-2"></i> original article</a></li>
             {% if article.has_author_link() %}
-            <li class="list-inline-item m-1"><a href="{{article.author}}">author</a></li>
+            <li class="list-inline-item m-1"><a href="{{article.author}}"><i class="ti-user mr-2"></i> author</a></li>
             {% endif %}
           </ul>
         </div>
@@ -118,7 +118,7 @@
           <h6 class="mb-4">TAGS</h6>
           <ul class="list-inline tag-list">
             {% for tag in article.tags %}
-            <li class="list-inline-item m-1"><a href="{{url_for('article', title=article.title)}}">{{tag}}</a></li>
+            <li class="list-inline-item m-1"><a href="{{url_for('news', tag=tag)}}">{{tag}}</a></li>
             {% endfor %}
           </ul>
         </div>

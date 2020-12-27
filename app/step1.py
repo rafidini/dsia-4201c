@@ -9,7 +9,7 @@ from subprocess import check_output
 
 if __name__=='__main__':
     # Begin date
-    date = datetime(2020, 12, 20)
+    date = datetime(2020, 12, 1)
     
     # Get links
     scrape_links(date)
