@@ -1,12 +1,22 @@
 """
 This module contains the models:
-- Article : For the TheGuardian articles
+- Article    : For the TheGuardian articles
+- Gas        : For the datasets related to CO2, NO2 and SO2
+- Area       : For the datasets related to Terrestrial, Marine and Forest area
+- Ressources : For the datasets related to Water and Renewable electricity sources
 """
 
 import maya  # Package for data parsing
 from textblob import TextBlob  # Package for text sentiment analysis
+import pandas as pd  # Package for data analysis and manipulation 
+import ssl
 
-# Default value
+# Allow to read excel from the web
+ssl._create_default_https_context = ssl._create_unverified_context
+
+#-- Related to Article --#
+
+# Default value for Article
 NAN = 'Unknown'
 
 class Article:
@@ -28,16 +38,16 @@ class Article:
         """
         Natural constructor of the Article class.
         """
-        has_elements = lambda x: True if len(x) > 0 else False
+        has_elements = lambda x: x[0] if len(x) > 0 else NAN
 
-        self.url    = url
-        self.title  = title[0]
-        self.date   = date[0]
-        self.tags   = tags
-        self.images = images
-        self.body   = body
-        self.author = author[0] if has_elements(author) else NAN
-        self.banner = banner[0] if has_elements(banner) else NAN
+        self.url    = url if url else None
+        self.title  = title[0] if title else None
+        self.date   = date[0] if date else None
+        self.tags   = tags if tags else None
+        self.images = images if images else None
+        self.body   = body if body else None
+        self.author = has_elements(author) if author else NAN
+        self.banner = has_elements(banner) if banner else NAN
 
     def get_date(self, short=False):
         """
@@ -222,3 +232,85 @@ def average_sentiment_score(articles):
     positivity = 0 if n == 0 else round(positivity / n, 1)
 
     return (negativity, positivity)
+
+
+#-- Related to Gas --#
+
+# Links for excel files
+GAS_LINKS = {
+    "CO2":"https://unstats.un.org/unsd/environment/excel_file_tables/2013/CO2_Emissions.xlsx",
+    "NO2":"https://unstats.un.org/unsd/environment/excel_file_tables/2013/NOx_Emissions.xlsx",
+    "SO2":"https://unstats.un.org/unsd/environment/excel_file_tables/2013/SO2_emissions.xlsx"
+}
+
+# Units depending on the gas
+GAS_UNITS = {
+    "CO2": {"EMISSIONS": "M Tonnes", "PERCENTAGE":"%", "CAPITA":"Tonnes"},
+    "NO2": {"EMISSIONS": "Thousand Tonnes", "PERCENTAGE":"%", "CAPITA":"Kg"},
+    "SO2": {"EMISSIONS": "Thousand Tonnes", "PERCENTAGE":"%", "CAPITA":"Kg"}
+}
+
+class Gas:
+    """
+    This class will contain the data about the following
+    gas emission :
+    - 'CO2'
+    - 'NO2'
+    - 'SO2'
+    """
+
+    def __init__(self, gas_name):
+        """
+        Natural constructor of Gas.
+        """
+        self.name = gas_name
+        self.link = GAS_LINKS.get(gas_name)
+        try:
+            # Get the data from the web
+            data = pd.read_excel(self.link, header=17 if self.name == "SO2" else 16, engine='openpyxl')
+            
+            # Get the right columns and rows
+            self.frame = data.iloc[1:, [1, 2, 4, 6, 8] if self.name == "CO2" else [1, 3, 5, 7]].dropna()
+
+        except:
+            print("Error in Gas instance creation. Reason : Link", flush=True)
+
+#-- Related to Area --#
+
+# Links for excel files
+AREA_LINKS = {
+    "FOREST"            :"https://unstats.un.org/unsd/envstats/Questionnaires/2019/Tables/Forest%20Area.xlsx",
+    "TERRESTRIAL_MARINE":"https://unstats.un.org/unsd/envstats/Questionnaires/2019/Tables/Terrestrial_Marine%20protected%20areas.xlsx"
+}
+
+class Area:
+    """
+    This class will contain the data about the following
+    protected area :
+    - 'FOREST'
+    - 'TERRESTRIAL_MARINE'
+    """
+    def __init__(self, area_name):
+        """
+        Natural constructor of Gas.
+        """
+        self.name = area_name
+        self.link = AREA_LINKS.get(area_name)
+        print(AREA_LINKS.get(area_name), flush=True)
+
+        try:
+            # Get the data from the web
+            data = pd.read_excel(
+                self.link, 
+                engine='openpyxl', 
+                sheet_name="data" if self.name == 'FOREST' else "Data", 
+                index_col="CountryID"
+            )
+
+            # Get the data from the web
+            self.frame = data.iloc[2:, :].dropna()
+
+        except:
+            print("Error in Area instance creation. Reason : Link", flush=True)
+
+#-- Related to Ressources --#

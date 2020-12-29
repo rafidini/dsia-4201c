@@ -78,14 +78,14 @@ def from_item_to_article(item):
     an extracted item from the MongoDB collection.
     """
     article = Article(
-        url=item['url'],
-        author=item['author'],
-        tags=item['tags'],
-        title=item['title'],
-        date=item['date'],
-        images=item['images'],
-        body=item['body'],
-        banner=item['banner']
+        url=item.get('url'),
+        author=item.get('author'),
+        tags=item.get('tags'),
+        title=item.get('title'),
+        date=item.get('date'),
+        images=item.get('images'),
+        body=item.get('body'),
+        banner=item.get('banner')
     )
 
     return article
@@ -98,10 +98,13 @@ def search_similar_articles(article, collection, max_articles=3):
     """
 
     # Define the query
-    query = {'tags': {'$in': article.tags}}
+    query = {'tags': {'$in': article.tags}, 'title':{'$ne':article.title}}
+
+    # Define the attributes to return
+    includes = {"banner":1, "author":1, "date":1, "title":1}
 
     # Launch the query
-    items = collection.find(query).limit(max_articles)
+    items = collection.find(query, includes).limit(max_articles)
 
     # Convert items to list of Article
     articles = [from_item_to_article(item) for item in items]
@@ -112,4 +115,11 @@ def search_n_last_articles(n, collection):
     """
     This functions returns n articles.
     """
-    return [from_item_to_article(item) for item in collection.find({}).limit(n)]
+
+    # Query
+    query = {}
+
+    # Includes and Excludes
+    includes = {"banner":1, "tags":1, "title":1, "body":1}
+
+    return [from_item_to_article(item) for item in collection.find(query, includes).limit(n)]
