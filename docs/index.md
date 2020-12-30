@@ -2,10 +2,10 @@
 
 ***LECO*** is a THE web app for environnement and stuff 🌳 created by **ESIEE Paris** students, [Itokiana RAFIDINARIVO](https://www.linkedin.com/in/itokiana-rafidinarivo/) and [Romain FONTA](https://www.linkedin.com/in/fonta-romain-84130617a/).
 
-This page is dedicated for those among you who want to improve or contribute to this project. As for the Python code documentation, it is [here](www.google.com).
+This website is dedicated for those among you who want to improve, contribute to<sup>or</sup>/<sub>and</sub> understand this project in depth.
 
 ## Table of contents
-- web
-- python
-- mongo
-- docker
+- Getting started with ***LECO***
+- User guide
+- Developper guide
+- Code documentation
