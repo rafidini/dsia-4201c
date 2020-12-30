@@ -292,11 +292,10 @@ class Area:
     """
     def __init__(self, area_name):
         """
-        Natural constructor of Gas.
+        Natural constructor of Area.
         """
         self.name = area_name
         self.link = AREA_LINKS.get(area_name)
-        print(AREA_LINKS.get(area_name), flush=True)
 
         try:
             # Get the data from the web
@@ -314,3 +313,41 @@ class Area:
             print("Error in Area instance creation. Reason : Link", flush=True)
 
 #-- Related to Ressources --#
+
+# Links for excel files
+RESSOURCES_LINKS = {
+    "ELECTRICITY":"https://unstats.un.org/unsd/envstats/Questionnaires/2019/Tables/Renewable%20elec%20production%20percentage.xlsx",
+    "WATER":"https://unstats.un.org/unsd/envstats/Questionnaires/2019/Tables/Renewable%20freshwater%20resources.xlsx"
+}
+
+class Ressources:
+    """
+    This class will contain the data about the following
+    renewable ressource :
+    - 'ELECTRICITY'
+    - 'WATER'
+    """ 
+    def __init__(self, ressource_name):
+        """
+        Natural constructor of Ressources.
+        """
+        self.name = ressource_name
+        self.link = RESSOURCES_LINKS.get(ressource_name)
+        print(RESSOURCES_LINKS.get(ressource_name), flush=True)
+
+        try:
+            # Get the data from the web
+            data = pd.read_excel(
+                self.link,
+                engine='openpyxl',
+                sheet_name="Data" if self.name == "ELECTRICITY" else "data",
+                index_col="CountryID",
+                nrows=225 if self.name == "ELECTRICITY" else 78
+            )
+
+            # Get the data from the web
+            self.frame = data.iloc[2:, :]
+            print(self.frame.head(), flush=True)
+            print("", flush=True)
+        except:
+            print("Error in Ressources instance creation. Reason : Link", flush=True)
