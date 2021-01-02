@@ -34,7 +34,10 @@
             <article class="text-center">
               <img class="img-fluid mb-4 rounded-lg" src="{{article.banner}}" alt="post-thumb">
               <p class="text-uppercase mb-2">{{article.tags[0]}}</p>
-              <p class="text-uppercase mb-2"><i class="ti-alarm-clock mr-2"></i><span>X min</span> read</p>
+              <div class="progress mb-2">
+                <div class="progress-bar" role="progressbar" style="width:{{article.sentiment_score(negative=True)}}%; background-color:#f2636a;" aria-valuenow="{{article.sentiment_score(negative=True)}}" aria-valuemin="0" aria-valuemax="100">{{article.sentiment_score(negative=True)}}%</div>
+                <div class="progress-bar" role="progressbar" style="width:{{article.sentiment_score(negative=False)}}%; background-color:#9cbcf0;" aria-valuenow="{{article.sentiment_score(negative=False)}}" aria-valuemin="0" aria-valuemax="100">{{article.sentiment_score(negative=False)}}%</div>
+              </div>
               <h4 class="title-border"><a class="text-dark" href="{{url_for('article', title=article.title)}}">{{article.title}}</a></h4>
               <p>{{article.get_body()[:220] + '...'}}</p>
               <a href="{{url_for('article', title=article.title)}}" class="btn btn-transparent">read more</a>

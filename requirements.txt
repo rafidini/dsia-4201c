@@ -39,3 +39,5 @@ textblob==0.15.3
 xlrd==2.0.1
 pandas
 openpyxl
+sklearn
+numpy

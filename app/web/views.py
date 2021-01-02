@@ -1,10 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from . import app, collection
 from db.utils import random_item, from_item_to_article, search_similar_articles, search_n_last_articles
-from web.models import Article, articles_count, average_letter_count, average_sentiment_score, Ressources
-
-Ressources('ELECTRICITY')
-Ressources('WATER')
+from web.models import Article, articles_count, average_letter_count, average_sentiment_score
 
 @app.route('/')
 @app.route('/home')

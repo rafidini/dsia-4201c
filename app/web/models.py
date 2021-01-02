@@ -9,6 +9,7 @@ This module contains the models:
 import maya  # Package for data parsing
 from textblob import TextBlob  # Package for text sentiment analysis
 import pandas as pd  # Package for data analysis and manipulation 
+import numpy as np  # Package for data manipulation 
 import ssl
 
 # Allow to read excel from the web
@@ -54,6 +55,10 @@ class Article:
         This functions returns a string of a formatted date using
         the maya package.
         """
+        # Quick check
+        if self.date is None:
+            return NAN
+
         # Parse the date
         date = maya.parse(self.date)
 
@@ -69,6 +74,9 @@ class Article:
         """
         This function returns the author.
         """
+        # Quick check
+        if self.author is None:
+            return NAN
 
         # Check if given author is a link
         if is_link(self.author):
@@ -90,6 +98,11 @@ class Article:
         This function returns True if the author given is a link
         otherwise False.
         """
+
+        # Quick check
+        if self.author is None:
+            return False
+
         # Check if given author is a link
         if is_link(self.author):
             return True
@@ -101,6 +114,10 @@ class Article:
         This functions returns True if the Article instance
         contains or not a banner image.
         """
+        # Quick check
+        if self.banner is None:
+            return False
+
         if self.banner != NAN:
             return True
 
@@ -111,6 +128,10 @@ class Article:
         This function return True if there are images
         otherwise False.
         """
+        # Quick check
+        if self.images is None:
+            return False
+
         if len(self.images) > 0:
             return True
         return False
@@ -120,6 +141,9 @@ class Article:
         This function returns the whole body of the article as
         a single string.
         """
+        # Quick check
+        if self.body is None:
+            return NAN
 
         # Join every elements in body
         whole = ' '.join(self.body)
@@ -131,16 +155,23 @@ class Article:
         This function return True if the text is more negative otherwise
         False.
         """
+        # Quick check
+        if self.body is None:
+            return False
+
         blob = TextBlob(self.get_body())  # Instanciate a TextBlob
 
         sentiment_score = blob.sentiment.polarity  # Score of the sentiment
 
-        return sentiment_score < 0.0
+        return sentiment_score <= 0.05
 
     def sentiment_score(self, negative=False):
         """
         This function returns the absolute score in percentage.
         """
+        # Quick check
+        if self.body is None:
+            return NAN
 
         # Counters
         neg = 0
@@ -235,6 +266,17 @@ def average_sentiment_score(articles):
 
 
 #-- Related to Gas --#
+def clean_str(value):
+    if type(value) is str:
+        return np.nan
+    return float(value)
+
+from sklearn.impute import KNNImputer
+
+def impute(frame):
+    imputer = KNNImputer(n_neighbors=5)
+    
+    return imputer.fit_transform(frame)
 
 # Links for excel files
 GAS_LINKS = {
@@ -259,21 +301,74 @@ class Gas:
     - 'SO2'
     """
 
-    def __init__(self, gas_name):
+    def __init__(self):
         """
         Natural constructor of Gas.
         """
-        self.name = gas_name
-        self.link = GAS_LINKS.get(gas_name)
-        try:
-            # Get the data from the web
-            data = pd.read_excel(self.link, header=17 if self.name == "SO2" else 16, engine='openpyxl')
-            
-            # Get the right columns and rows
-            self.frame = data.iloc[1:, [1, 2, 4, 6, 8] if self.name == "CO2" else [1, 3, 5, 7]].dropna()
 
-        except:
-            print("Error in Gas instance creation. Reason : Link", flush=True)
+        self.link = GAS_LINKS
+        self.frame = dict()
+
+        for gas in self.link.keys():
+            try:
+                # Get the data from the web
+                data = pd.read_excel(self.link[gas], header=17 if gas == "SO2" else 16, engine='openpyxl')
+                
+                # Get the right columns and rows
+                self.frame[gas] = data.iloc[1:, [1, 2, 4, 6, 8] if gas == "CO2" else [1, 3, 5, 7]].dropna()
+            except:
+                print(f"Error in Gas instance creation. Reason : {gas} Link", flush=True)
+
+        
+        self.merge()
+
+        print(self.gases.head(), flush=True)
+
+    def merge(self):
+        """
+        This function merge the frames.
+        """
+        col = 'Country'
+        self.gases = self.frame["CO2"].join(self.frame["NO2"].set_index(col), on=col, rsuffix='_NO2', lsuffix='_CO2')
+        self.gases = self.gases.join(self.frame["SO2"].set_index(col), on=col, rsuffix='', lsuffix='_SO2')
+
+        self.clean_merge()
+
+    def clean_merge(self):
+        """
+        This function cleans the merged frame.
+        """
+        self.gases = self.gases.rename(columns={"% change since 1990":"% change since 1990_SO2", "CO2 emissions ":"CO2 emissions"})
+        
+        self.gases.columns = [
+            column.replace("% change since 1990", "evolution")
+            if "% change since 1990" in column
+            else column
+            for column in self.gases.columns
+        ]
+        
+        self.gases.columns = [
+            column.replace("NOx", "NO2")
+            if "NOx" in column
+            else column
+            for column in self.gases.columns
+        ]
+
+        self.gases = self.gases.replace({
+            "United Kingdom of Great Britain and Northern Ireland":"United Kingdom",
+            "United States of America":"United States",
+            "Russian Federation":"Russia",
+            "Democratic People's Republic of Korea":"North Korea",
+            "Republic of Korea":"South Korea"
+        })
+
+        cols = self.gases.columns.tolist()
+        
+        cols.remove("Country")
+        
+        self.gases[cols] = self.gases[cols].applymap(clean_str)
+
+        self.gases[cols] = impute(self.gases[cols])
 
 #-- Related to Area --#
 
