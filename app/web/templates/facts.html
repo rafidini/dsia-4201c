@@ -2,31 +2,115 @@
 
 {% block title%}Facts{% endblock %}
 
+<!-- For the Javascript code -->
+{% block head %}
+
+{% if statstype == "GAS" %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {
+    'packages':['geochart', 'corechart'],
+    // Note: you will need to get a mapsApiKey for your project.
+    // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+    'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+  });
+{% for gas in data.keys() %}
+
+  // Display the charts
+  google.charts.setOnLoadCallback({{"drawRegionsMap"+gas}});
+  google.charts.setOnLoadCallback({{"drawHistogram"+gas}});
+
+  function {{"drawHistogram"+gas}}() {
+    var data = google.visualization.arrayToDataTable({{data[gas]['data']|tojson}});
+      
+    var histchart = new google.visualization.Histogram(document.getElementById('hist_div_{{gas}}'));
+    var histoptions = {
+      title: '{{gas}} emissions',
+      legend: { position: 'none' },
+      colors: ['{{data[gas]["colors"]}}'],
+    }
+
+    histchart.draw(data, histoptions);
+    }
+
+  function {{"drawRegionsMap"+gas}}() {
+    var data = google.visualization.arrayToDataTable({{data[gas]['data']|tojson}});
+
+    var geooptions = {
+      title: '{{gas}} emissions',
+      colorAxis: {colors: ['#FFFFFF', '{{data[gas]["colors"]}}']}
+    };
+    
+    var geochart = new google.visualization.GeoChart(document.getElementById('regions_div_{{gas}}'));
+
+    geochart.draw(data, geooptions);
+  }
+{% endfor %}
+</script>
+
+{% elif statstype == "PROTECTED_AREAS" %}
+
+{% elif statstype == "RENEWABLE_RESSOURCES" %}
+
+{% endif %}
+
+{% endblock %}
+
 {% block content %}
-<section class="section">
+
+<section class="section bg-secondary">
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="mb-4">Contact Us</h2>
-        <img src="../static/images/contact.jpg" alt="author" class="img-fluid w-100 mb-4">
-        <p class="mb-5">Strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream and, as I lie close to the earth, a thousand unknown plants are noticed by me.<br><br>When I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains.</p>
-        <form action="#" class="row">
-          <div class="col-lg-6">
-            <input type="text" class="form-control mb-4" name="name" id="name" placeholder="Name">
-          </div>
-          <div class="col-lg-6">
-            <input type="email" class="form-control mb-4" name="email" id="email" placeholder="Email">
-          </div>
-          <div class="col-12">
-            <textarea name="message" id="message" class="form-control mb-4" placeholder="Message..."></textarea>
-          </div>
-          <div class="col-12">
-            <button class="btn btn-primary">Submit</button>
-          </div>
-        </form>
+        <h4>Facts</h4>
       </div>
     </div>
   </div>
+</section>
+
+<section class="section">
+  <div class="container">
+  {% if statstype == "GAS" %}
+  {% for gas in data.keys() %}
+    <div class="row">
+      <div class="col-12"><h4>{{gas}} emissions per capita</h4></div>
+      <div class="col-8">
+        <div id="regions_div_{{gas}}"></div>
+      </div>
+      <div class="col-lg-4" style="height: 100%;">
+        <div id="hist_div_{{gas}}" style="height: 400px; width: 500px;"></div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+
+  {% elif statstype == "PROTECTED_AREAS" %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>Protected Areas (Terrestrial, Marine and Forest)</h4>
+      </div>
+    </div>
+  </div>
+
+  {% elif statstype == "RENEWABLE_RESSOURCES" %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>Renewable ressources (Electricity and Freshwater)</h4>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>Nope</h4>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </section>
 
 {% endblock %}

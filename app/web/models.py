@@ -322,8 +322,6 @@ class Gas:
         
         self.merge()
 
-        print(self.gases.head(), flush=True)
-
     def merge(self):
         """
         This function merge the frames.
@@ -369,6 +367,29 @@ class Gas:
         self.gases[cols] = self.gases[cols].applymap(clean_str)
 
         self.gases[cols] = impute(self.gases[cols])
+
+    def get_gas_per_capita(self, gas_name):
+        """
+        This function returns the data in the correct format for javascript data.
+        """
+        columns_data = ["Country", f"{gas_name} emissions per capita"]
+
+        if gas_name == "NO2":
+            data = self.gases[columns_data]
+            data = data[ data["NO2 emissions per capita"] < 1400].values.tolist()
+        elif gas_name == "SO2":
+            data = self.gases[columns_data]
+            data = data[ data["SO2 emissions per capita"] < 2000].values.tolist()
+        else:
+            data = self.gases[columns_data].values.tolist()
+
+        data.insert(0, columns_data)
+
+
+        return data
+
+    def get_gas_names(self):
+        return ["CO2", "NO2", "SO2"]
 
 #-- Related to Area --#
 

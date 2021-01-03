@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from . import app, collection
 from db.utils import random_item, from_item_to_article, search_similar_articles, search_n_last_articles
-from web.models import Article, articles_count, average_letter_count, average_sentiment_score
+from web.models import Article, articles_count, average_letter_count, average_sentiment_score, Gas, Area, Ressources
 
 @app.route('/')
 @app.route('/home')
@@ -61,9 +61,38 @@ def news(tag=None):
 def about():
     return render_template('about.html')
 
+# Variables for statistics
+gas  = Gas()
+# area = Area()
+# ressources = Ressources()
+
 @app.route('/facts')
-def facts():
-    return render_template('facts.html')
+@app.route('/facts/<statstype>')
+def facts(statstype=None):
+
+    if statstype is None:
+        return render_template('index.html')
+
+    # Define data just in case
+    data = None
+
+    # Prepare stats for Gas
+    if statstype == "GAS":
+        data = dict()
+        # Add the colors to it
+        colors = {
+            "CO2":"#132754",
+            "NO2":"#5f1da1",
+            "SO2":"#e3592b"
+        }
+
+        # Create a dictionary for each gas's data
+        for gas_name in gas.get_gas_names():
+            data[gas_name] = dict()
+            data[gas_name]["data"]   = gas.get_gas_per_capita(gas_name)
+            data[gas_name]["colors"] = colors[gas_name]
+
+    return render_template('facts.html', statstype=statstype, data=data)
 
 @app.route('/article/<title>')
 def article(title):
