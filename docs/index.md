@@ -5,7 +5,7 @@
 This website is dedicated for those among you who want to improve, contribute to<sup>or</sup>/<sub>and</sub> understand this project in depth.
 
 ## Table of contents
-- [Getting started with ***LECO***](assets/gettingstarted.md)
-- [User Guide](assets/userguide.md)
-- [Developper Guide](assets/developperguide.md)
+- [Getting started with ***Leco***](pages/gettingstarted.md)
+- [User Guide](pages/userguide.md)
+- [Developper Guide](pages/developperguide.md)
 - Code documentation

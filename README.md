@@ -88,7 +88,7 @@ web_1      |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
 # Contributing
 
-Before creating an issue, please ensure that it hasn't already been reported/suggested
+Before creating an issue, please ensure that it hasn't already been reported/suggested and if you want details about the app structure please check the [documentation website](https://rafidini.github.io/dsia-4201c/).
 
 # Help
 

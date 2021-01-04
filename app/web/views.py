@@ -106,18 +106,3 @@ def article(title):
     similars = [item for item in search_similar_articles(article, collection, max_articles=4)]
 
     return render_template('article.html', article=article, similar_articles=similars)
-
-@app.route('/random')
-def random():
-    # Query the database for a random article
-    size = 1
-    items = random_item(1, collection)
-    item = items[0]
-
-    # Convert to an Article instance
-    article = from_item_to_article(item)
-
-    # Look for similar articles
-    similars = random_item(3, collection)
-
-    return render_template('article.html', article=article, similar_articles=similars)
