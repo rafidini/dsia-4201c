@@ -406,27 +406,74 @@ class Area:
     - 'FOREST'
     - 'TERRESTRIAL_MARINE'
     """
-    def __init__(self, area_name):
+    def __init__(self):
         """
         Natural constructor of Area.
         """
-        self.name = area_name
-        self.link = AREA_LINKS.get(area_name)
+        self.link = AREA_LINKS
+        self.frame = dict()
 
         try:
-            # Get the data from the web
-            data = pd.read_excel(
-                self.link, 
-                engine='openpyxl', 
-                sheet_name="data" if self.name == 'FOREST' else "Data", 
-                index_col="CountryID"
-            )
+            for area in self.link.keys():
+                # Get the data from the web
+                data = pd.read_excel(
+                    self.link[area],
+                    engine='openpyxl',
+                    sheet_name="data" if area == 'FOREST' else "Data",
+                    index_col="CountryID"
+                )
+                
+                # Get the data from the web
+                self.frame[area] = data.iloc[2:, :].dropna()
 
-            # Get the data from the web
-            self.frame = data.iloc[2:, :].dropna()
+                # Clean it
+                self.clean_frames(area)
 
         except:
             print("Error in Area instance creation. Reason : Link", flush=True)
+        
+        self.merge()
+    
+    def clean_frames(self, area_name):
+        """
+        Clean the DataFrame extracted from the web.
+        """
+        print(f"clean_frames({area_name})", flush=True)
+
+        if area_name == "FOREST":
+            # Clean some columns
+            cols = ['Forest Area, 1990', 'Forest Area, 2000', 'Forest Area, 2010', 'Forest Area, 2015', 'Forest Area, 2020']
+            for col in cols:
+                self.frame[area_name][col] = self.frame[area_name][col].apply(clean_str)
+
+            # Delete and change some columns
+            self.frame[area_name] = self.frame[area_name].drop(columns=['Total Land Area, 2020', 'Forest Area as a  Proportion of \nTotal Land Area, 2020',
+            'Deforestation, \n2015-2020', 'Total Forest Area \nAffected by Fire, 2015'])
+            self.frame[area_name].columns = ["Country", "1990", "2000", "2010", "2015", "2020"]
+
+        elif area_name == "TERRESTRIAL_MARINE":
+            # Clean some columns
+            col = 'Terrestrial and marine protected areas '
+            self.frame[area_name][col] = self.frame[area_name][col].apply(clean_str)
+
+            # Delete and change some columns
+            self.frame[area_name] = self.frame[area_name].drop(columns="latest year available")
+            self.frame[area_name].columns = ["Country", "Terrestrial/Marine Area (%)"]
+
+    def merge(self):
+        """
+        Merge the DataFrame together.
+        """
+        col = 'Country'
+        self.areas = self.frame["TERRESTRIAL_MARINE"].join(self.frame["FOREST"].set_index(col), on=col, lsuffix='X').dropna()
+
+    def get_data(self):
+        """
+        This function returns the data for the dashboard.
+        """
+        values = self.areas.values.tolist()
+        values.insert(0, self.areas.columns.tolist())
+        return values
 
 #-- Related to Ressources --#
 

@@ -63,7 +63,7 @@ def about():
 
 # Variables for statistics
 gas  = Gas()
-# area = Area()
+area = Area()
 # ressources = Ressources()
 
 @app.route('/facts')
@@ -74,11 +74,10 @@ def facts(statstype=None):
         return render_template('index.html')
 
     # Define data just in case
-    data = None
+    data = dict()
 
     # Prepare stats for Gas
     if statstype == "GAS":
-        data = dict()
         # Add the colors to it
         colors = {
             "CO2":"#132754",
@@ -91,6 +90,11 @@ def facts(statstype=None):
             data[gas_name] = dict()
             data[gas_name]["data"]   = gas.get_gas_per_capita(gas_name)
             data[gas_name]["colors"] = colors[gas_name]
+    
+    # Prepare stats for Area
+    elif statstype == "PROTECTED_AREAS":
+        # Get the data
+        data["data"] = area.get_data()
 
     return render_template('facts.html', statstype=statstype, data=data)
 

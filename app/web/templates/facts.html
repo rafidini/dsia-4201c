@@ -4,9 +4,9 @@
 
 <!-- For the Javascript code -->
 {% block head %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% if statstype == "GAS" %}
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {
     'packages':['geochart', 'corechart'],
@@ -49,6 +49,69 @@ google.charts.load('current', {
 </script>
 
 {% elif statstype == "PROTECTED_AREAS" %}
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart', 'gauge', 'controls']});
+  google.charts.setOnLoadCallback(drawMainDashboard);
+
+  function drawMainDashboard() {
+    var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div'));
+    var slider = new google.visualization.ControlWrapper({
+      'controlType': 'NumberRangeFilter',
+      'containerId': 'slider_div',
+      'options': {
+        'filterColumnIndex': 1,
+        'ui': {
+          'labelStacking': 'vertical',
+          'label': 'Age Filter:'
+        }
+      }
+    });
+    var categoryPicker = new google.visualization.ControlWrapper({
+      'controlType': 'CategoryFilter',
+      'containerId': 'categoryPicker_div',
+      'options': {
+        'filterColumnIndex': 0,
+        'ui': {
+          'labelStacking': 'vertical',
+          'label': 'Gender Selection:',
+          'allowTyping': false,
+          'allowMultiple': false
+        }
+      }
+    });
+    var pie = new google.visualization.ChartWrapper({
+      'chartType': 'PieChart',
+      'containerId': 'pie_div',
+      'options': {
+        'width': 300,
+        'height': 300,
+        'legend': 'none',
+        'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
+        'pieSliceText': 'label'
+      },
+      'view': {'columns': [0, 1]}
+    });
+    var table = new google.visualization.ChartWrapper({
+      'chartType': 'ColumnChart',
+      'containerId': 'column_div',
+      'options': {
+        'view': {'columns': [0, 2, 3, 4, 5, 6]}
+      }
+    });
+
+    var data = google.visualization.arrayToDataTable([
+        ['Country', 'TMArea', '1990', '2000', '2010', '2015', '2020'],
+        ['Argentina', 7.40512875012761, 35204.0, 33378.0, 30214.0, 29097.0, 28573.0],
+        ['Austria', 28.3979816556051, 3775.67, 3838.14, 3863.2, 3881.19, 3899.15],
+        ['Bahrain', 1.68635200570205, 0.22, 0.37, 0.52, 0.6, 0.7],
+        ['Belarus', 9.35349335261767, 7780.0, 8273.0, 8630.0, 8633.5, 8767.6]
+    ]);
+
+    dashboard.bind([slider, categoryPicker], [pie, table]);
+    dashboard.draw(data);
+  }
+</script>
 
 {% elif statstype == "RENEWABLE_RESSOURCES" %}
 
@@ -69,26 +132,50 @@ google.charts.load('current', {
 </section>
 
 <section class="section">
-  <div class="container">
   {% if statstype == "GAS" %}
+  <div class="container"></div>
   {% for gas in data.keys() %}
     <div class="row">
       <div class="col-12"><h4>{{gas}} emissions per capita</h4></div>
-      <div class="col-8">
+      <div class="col-lg-8">
         <div id="regions_div_{{gas}}"></div>
       </div>
       <div class="col-lg-4" style="height: 100%;">
         <div id="hist_div_{{gas}}" style="height: 400px; width: 500px;"></div>
       </div>
     </div>
-  {% endfor %}
   </div>
+  {% endfor %}
 
   {% elif statstype == "PROTECTED_AREAS" %}
   <div class="container">
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12 table-responsive">
         <h4>Protected Areas (Terrestrial, Marine and Forest)</h4>
+          <!-- TABLE -->
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                {% for head in data["data"][0] %}
+                <th scope="col">{{head}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for row in data["data"][1:] %}
+              <tr class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{row[0]}}" aria-valuemin="0" aria-valuemax="100" style="background-color: green;"></div>
+              </tr>
+              <tr>
+                {% for element in row[1:] %}
+                <td scope="row">{{element}}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- /TABLE -->
       </div>
     </div>
   </div>
