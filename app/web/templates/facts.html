@@ -164,13 +164,26 @@ google.charts.load('current', {
 
             <tbody>
               {% for row in data["data"][1:] %}
-              <tr class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{row[0]}}" aria-valuemin="0" aria-valuemax="100" style="background-color: green;"></div>
-              </tr>
-              <tr>
-                {% for element in row[1:] %}
-                <td scope="row">{{element}}</td>
+              <tr scope="row">
+
+                <td scope="row">{{row[0]}}</td>
+
+                <td scope="row">
+                <h4>
+                  {% if row[1] < 50 %}
+                  <span class="badge badge-pill badge-danger">
+                  {% else %}
+                  <span class="badge badge-pill badge-success">
+                  {% endif %}
+                  <b>{{row[1]|round}}</b>%
+                  </div>
+                </h4>
+                </td>
+
+                {% for element in row[2:] %}
+                <td scope="row">{{element|round}}</td>
                 {% endfor %}
+
               </tr>
               {% endfor %}
             </tbody>
@@ -190,11 +203,40 @@ google.charts.load('current', {
   </div>
 
   {% else %}
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h4>Nope</h4>
-      </div>
+  
+  <div class="row featured-post-slider">
+    <div class="col-lg-3 col-sm-6 mb-2 mb-lg-0 px-1">
+      <article class="card bg-dark text-center text-white border-0 rounded-lg">
+        <img class="card-img rounded-lg img-fluid w-100" src="../static/images/featured-post/air_pollution.jpg" alt="post-thumb">
+        <div class="card-img-overlay">
+          <div class="card-content">
+            <h4 class="card-title mb-4"><a class="text-white" href="">CO<sub>2</sub>, NO<sub>2</sub> and SO<sub>2</sub> Emissions statistics</a></h4>
+            <a class="btn btn-outline-light" href="{{url_for('facts', statstype='GAS')}}">click here</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col-lg-3 col-sm-6 mb-2 mb-lg-0 px-1">
+      <article class="card bg-dark text-center text-white border-0 rounded-lg">
+        <img class="card-img rounded-lg img-fluid w-100" src="../static/images/featured-post/protected_areas.jpg" alt="post-thumb">
+        <div class="card-img-overlay">
+          <div class="card-content">
+            <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('facts', statstype='PROTECTED_AREAS')}}">Forest, Terrestrial and marine protected areas statistics</a></h4>
+            <a class="btn btn-outline-light" href="">click here</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col-lg-3 col-sm-6 mb-2 mb-lg-0 px-1">
+      <article class="card bg-dark text-center text-white border-0 rounded-lg">
+        <img class="card-img rounded-lg img-fluid w-100" src="../static/images/featured-post/renewable_energy.jpg" alt="post-thumb">
+        <div class="card-img-overlay">
+          <div class="card-content">
+            <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('facts', statstype='RENEWABLE_RESSOURCES')}}">Water and Electricity renewable production statistics</a></h4>
+            <a class="btn btn-outline-light" href="">click here</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
   {% endif %}

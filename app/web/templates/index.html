@@ -13,7 +13,7 @@
           <div class="card-img-overlay">
             <div class="card-content">
               <h4 class="card-title mb-4"><a class="text-white" href="">CO<sub>2</sub>, NO<sub>2</sub> and SO<sub>2</sub> Emissions statistics</a></h4>
-              <a class="btn btn-outline-light" href="">click here</a>
+              <a class="btn btn-outline-light" href="{{url_for('facts', statstype='GAS')}}">click here</a>
             </div>
           </div>
         </article>
@@ -23,7 +23,7 @@
           <img class="card-img rounded-lg img-fluid w-100" src="../static/images/featured-post/protected_areas.jpg" alt="post-thumb">
           <div class="card-img-overlay">
             <div class="card-content">
-              <h4 class="card-title mb-4"><a class="text-white" href="">Forest, Terrestrial and marine protected areas statistics</a></h4>
+              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('facts', statstype='PROTECTED_AREAS')}}">Forest, Terrestrial and marine protected areas statistics</a></h4>
               <a class="btn btn-outline-light" href="">click here</a>
             </div>
           </div>
@@ -34,7 +34,7 @@
           <img class="card-img rounded-lg img-fluid w-100" src="../static/images/featured-post/renewable_energy.jpg" alt="post-thumb">
           <div class="card-img-overlay">
             <div class="card-content">
-              <h4 class="card-title mb-4"><a class="text-white" href="">Water and Electricity renewable production statistics</a></h4>
+              <h4 class="card-title mb-4"><a class="text-white" href="{{url_for('facts', statstype='RENEWABLE_RESSOURCES')}}">Water and Electricity renewable production statistics</a></h4>
               <a class="btn btn-outline-light" href="">click here</a>
             </div>
           </div>
