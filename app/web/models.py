@@ -438,7 +438,6 @@ class Area:
         """
         Clean the DataFrame extracted from the web.
         """
-        print(f"clean_frames({area_name})", flush=True)
 
         if area_name == "FOREST":
             # Clean some columns

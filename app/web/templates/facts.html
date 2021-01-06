@@ -166,10 +166,10 @@ google.charts.load('current', {
               {% for row in data["data"][1:] %}
               <tr scope="row">
 
-                <td scope="row">{{row[0]}}</td>
+                <td scope="row"><b>{{row[0]}}</b></td>
 
                 <td scope="row">
-                <h4>
+                <h5>
                   {% if row[1] < 50 %}
                   <span class="badge badge-pill badge-danger">
                   {% else %}
@@ -177,12 +177,60 @@ google.charts.load('current', {
                   {% endif %}
                   <b>{{row[1]|round}}</b>%
                   </div>
-                </h4>
+                </h5>
                 </td>
 
-                {% for element in row[2:] %}
-                <td scope="row">{{element|round}}</td>
-                {% endfor %}
+                <td scope="row">
+                  {{row[2]}}
+                </td>
+
+                <td scope="row">
+                  {{row[3]}}
+                  {% if (row[3] - row[2]) < 0 %}
+                  <sup class="text-danger font-weight-bold">
+                  -{{((row[3]*100)/(row[2]+0.01))|round}}%
+                  {% else %}
+                  <sup class="text-success font-weight-bold">
+                  +{{(((row[3]*100)/(row[2]+0.01))-100)|round}}%
+                  {% endif %}
+                  </sup>
+                </td>
+
+                <td scope="row">
+                  {{row[4]}}
+                  {% if (row[4] - row[3]) < 0 %}
+                  <sup class="text-danger font-weight-bold">
+                  -{{((row[4]*100)/(row[3]+0.01))|round}}%
+                  {% else %}
+                  <sup class="text-success font-weight-bold">
+                  +{{(((row[4]*100)/(row[3]+0.01))-100)|round}}%
+                  {% endif %}
+                  </sup>
+                </td>
+
+                <td scope="row">
+                  {{row[5]}}
+                  {% if (row[5] - row[4]) < 0 %}
+                  <sup class="text-danger font-weight-bold">
+                  -{{((row[5]*100)/(row[4]+0.01))|round}}%
+                  {% else %}
+                  <sup class="text-success font-weight-bold">
+                  +{{(((row[5]*100)/(row[4]+0.01)))|round}}%
+                  {% endif %}
+                  </sup>
+                </td>
+
+                <td scope="row">
+                  {{row[6]}}
+                  {% if (row[6] - row[5]) < 0 %}
+                  <sup class="text-danger font-weight-bold">
+                  -{{((row[6]*100)/(row[5]+0.01))|round}}%
+                  {% else %}
+                  <sup class="text-success font-weight-bold">
+                  +{{(((row[6]*100)/(row[5]+0.01))-100)|round}}%
+                  {% endif %}
+                  </sup>
+                </td>
 
               </tr>
               {% endfor %}

@@ -8,4 +8,3 @@ This website is dedicated for those among you who want to improve, contribute to
 - [Getting started with ***Leco***](pages/gettingstarted.md)
 - [User Guide](pages/userguide.md)
 - [Developper Guide](pages/developperguide.md)
-- Code documentation

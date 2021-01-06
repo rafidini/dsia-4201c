@@ -67,11 +67,11 @@ Make sure you have downloaded ***Docker*** and ***Docker Compose*** before begin
 1. Navigate your shell into the project directory
 2. Launch the following command
 
-```
+```bash
 $ docker-compose up
 ```
 3. Check the output
-```
+```bash
 ...
 web_1      | > X items were saved in the database.
 web_1      | > 0 items were not saved in the database.
