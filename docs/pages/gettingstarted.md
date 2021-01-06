@@ -44,13 +44,14 @@ web_1      |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
 4. Open your web browser to this ip adress : *0.0.0.0:5000*
 
-Now you can check the [User Guide](pages/userguide.md).
+Now you can check the [User Guide](userguide.md).
 
 ### FAQ
 
 #### What is Leco ?
 
 Basically ***Leco*** is a web application focused on our mother Earth. 
+
 
 #### What does it offer to you ?
 
