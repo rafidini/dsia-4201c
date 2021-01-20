@@ -3,9 +3,9 @@
 ![quote.png](assets/quote.png)
 
 <p>
-  <img src="https://img.shields.io/badge/status-building-orange.svg">
-  <img src="https://img.shields.io/badge/version-v0.0.0-blue.svg">
-  <img src="https://img.shields.io/badge/documentation-no-red.svg">
+  <img src="https://img.shields.io/badge/status-finished-green.svg">
+  <img src="https://img.shields.io/badge/version-v1.0.0-blue.svg">
+  <img src="https://img.shields.io/badge/documentation-yes-red.svg">
 </p>
 
 <p>
