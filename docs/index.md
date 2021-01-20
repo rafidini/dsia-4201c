@@ -4,6 +4,10 @@
 
 This website is dedicated for those among you who want to improve, contribute to<sup>or</sup>/<sub>and</sub> understand this project in depth.
 
+## Workflow
+
+![](assets/workflow.png)
+
 ## Table of contents
 - [Getting started with ***Leco***](pages/gettingstarted.md)
 - [User Guide](pages/userguide.md)
