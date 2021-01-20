@@ -26,6 +26,7 @@
   - [Docker](#docker)
 - [Usage](#usage)
 - [Contributing](#contributing)
+  - [Some issues](#some-issues)
 - [Help](#help)
 - [Credits](#credits)
 
@@ -83,12 +84,23 @@ web_1      |  * Debug mode: off
 web_1      |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 ...
 ```
-4. Use the app
+4. Go to the following [link](http://0.0.0.0:5000/) 
 
+> Here are the most relevant part/links of the application : 
+> - http://0.0.0.0:5000/
+> - http://0.0.0.0:5000/facts/GAS
+> - http://0.0.0.0:5000/facts/PROTECTED_AREAS
+> - http://0.0.0.0:5000/about
+> - http://0.0.0.0:5000/news
+> - http://0.0.0.0:5000/news/plastics
 
 # Contributing
 
 Before creating an issue, please ensure that it hasn't already been reported/suggested and if you want details about the app structure please check the [documentation website](https://rafidini.github.io/dsia-4201c/).
+
+## Some issues
+- **[http://0.0.0.0:5000/facts/PROTECTED_AREAS](http://0.0.0.0:5000/facts/PROTECTED_AREAS)** : This page doesn't change despite modifying the code because the formula that computes the percentage increase/decrease does not work properly.
+- **[http://0.0.0.0:5000/news](http://0.0.0.0:5000/news)** : This page needs to be modified because it takes too long to load because on this page we query the *MongoDB* for all articles available in the database.
 
 # Help
 
