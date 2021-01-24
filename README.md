@@ -94,6 +94,9 @@ web_1      |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 > - http://0.0.0.0:5000/news
 > - http://0.0.0.0:5000/news/plastics
 
+# License
+@ Contributors, 2021. Licensed under a [GNU General Public License v3.0](https://github.com/rafidini/dsia-4201c/blob/main/LICENSE).
+
 # Contributing
 
 Before creating an issue, please ensure that it hasn't already been reported/suggested and if you want details about the app structure please check the [documentation website](https://rafidini.github.io/dsia-4201c/).
